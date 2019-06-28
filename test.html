@@ -24,17 +24,17 @@
 
 	
 	
-	<a-box position="-2 2 -5" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g3')"></a-box>
-	<a-text position="-2 2 -4" rotation="0 0 0" color="#fff" value="G1"> </a-text>
+	<a-box position="-2 2 1" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g3')"></a-box>
+	<a-text position="-2 2 1" rotation="0 0 0" color="#fff" value="G1"> </a-text>
 	
 	
-	<a-box position="0 2 -5" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g2')"></a-box>
+	<a-box position="0 2 1" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g2')"></a-box>
 	
-	<a-text position="-0.2 2 -4" rotation="0 0 0" color="#fff" value="G2"> </a-text>
+	<a-text position="-0.2 2 1" rotation="0 0 0" color="#fff" value="G2"> </a-text>
 	
 	
-	<a-box position="2 2 -5"" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g3')"></a-box>
-	<a-text position="1.6 2 -4" rotation="0 0 0" color="#fff" value="G3"> </a-text>
+	<a-box position="2 2 1"" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g3')"></a-box>
+	<a-text position="1.6 2" rotation="0 0 0" color="#fff" value="G3"> </a-text>
       
     
 	
@@ -108,8 +108,8 @@
         return x + " " + y + " " + z
       },
       width: function(d) { return 0.1},
-      depth: function(d) { return 0.5},
-      height: function(d) { return hscale(d)/2},
+      depth: function(d) { return 0.1},
+      height: function(d) { return hscale(d)},
       opacity: alpha,
       color: 'blue'
     })
