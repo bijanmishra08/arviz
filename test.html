@@ -104,13 +104,13 @@
 		count = count+1;
 
         var x = ( i*.1 );
-        var y = hscale(d)/2;
-        var z = -1
+        var y = hscale(d)/3;
+        var z = -2
         return x + " " + y + " " + z
       },
       width: function(d) { return 0.1},
       depth: function(d) { return 0.5},
-      height: function(d) { return hscale(d)},
+      height: function(d) { return (hscale(d))},
       opacity: alpha,
       color: 'blue'
     })
