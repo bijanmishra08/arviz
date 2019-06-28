@@ -10,9 +10,17 @@
   </head>
   <body>
 
-    <a-scene  embedded arjs>
+   <a-scene  embedded arjs>
 	  <a-marker preset="hiro">
-  
+      <a-entity position="8 2 1" >
+        <a-entity  look-controls >
+			<a-entity cursor="fuse: true; fuseTimeout: 500"
+            position="0 0 -2"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.027"
+            material="color: black; shader: flat"
+  		</a-entity>
+    	</a-entity>
+      </a-entity>
 
 	
 	
