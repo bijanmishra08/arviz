@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://aframe.io/releases/0.9.1/aframe.min.js"></script>
+<script src="https://raw.githack.com/jeromeetienne/AR.js/1.7.1/aframe/build/aframe-ar.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+	 <script src="https://unpkg.com/aframe-map"></script>
+	  
+  </head>
+  <body>
+
+    <a-scene  embedded arjs>
+	  <a-marker preset="hiro">
+      <a-entity position="8 2 8" >
+        <a-entity  look-controls >
+			<a-entity cursor="fuse: true; fuseTimeout: 500"
+            position="0 0 -2"
+            geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.027"
+            material="color: black; shader: flat"
+  		</a-entity>
+    	</a-entity>
+      </a-entity>
+
+	
+	
+	<a-box position="-2 2 -5" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g3')"></a-box>
+	<a-text position="-2 2 -4" rotation="0 0 0" color="#fff" value="G1"> </a-text>
+	
+	
+	<a-box position="0 2 -5" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g2')"></a-box>
+	
+	<a-text position="-0.2 2 -4" rotation="0 0 0" color="#fff" value="G2"> </a-text>
+	
+	
+	<a-box position="2 2 -5"" rotation="0 0 0" color="#4CC3D9" onclick="boxClick('g3')"></a-box>
+	<a-text position="1.6 2 -4" rotation="0 0 0" color="#fff" value="G3"> </a-text>
+      
+    
+	
+			<a-sky color="#ECECEC"></a-sky>
+	  </a-marker>
+
+	  <a-entity camera></a-entity>
+	
+	</a-scene>
+
+  <script>
+  	// default alpha for bars
+	
+	function boxClick(g){
+		d3.selectAll(".bar").remove();
+		
+		var data = [ 19, 80, 30, 15, 55, 35, 40,
+                45, 50, 70, 109, 35, 78,
+               87, 76, 22, 2, 33, 44, 59, 200];
+			   
+		 var animals = [ 'Bobcat', 'Dog', 'Cat', 'Boar', 'Cheetah', 'Chimp', 'Dragon',
+                'Elephant', 'Human', 'Elf', 'Giant', 'Batman', 'Donkey',
+               'Henry', 'Face', 'Funny', 'Kitty', 'Doggy', 'Joker', 'Alf', 'Earth']	 ;
+			   
+        var slice_obj={
+					"g1": 10,
+					"g2": 15,
+					"g3" : 20		
+		}	
+		
+		
+		addGraph(data.slice(0,slice_obj[g]), animals.slice(0,slice_obj[g]));
+		
+     }
+	 
+	 
+	
+	
+	function addGraph(data, animals){
+		var alpha = 0.6
+	
+	
+
+    // fake data
+    
+			   
+	var count = (data.length /2) * -1;
+    
+    
+    // we scale the height of our bars using d3's linear scale
+    var hscale = d3.scale.linear()
+    	.domain([0, d3.max(data)])
+    	.range([0, 3])
+    
+    // we select the scene object just like an svg
+    var scene = d3.select("a-marker")
+    
+    // we use d3's enter/update/exit pattern to draw and bind our dom elements
+    var bars = scene.selectAll("a-box.bar").data(data)
+    bars.enter().append("a-box").classed("bar", true)
+
+    $( ".bar" ).append( "<a-text> </a-text>" );
+    // we set attributes on our cubes to determine how they are rendered
+    bars.attr({
+      position: function(d,i) {
+		count = count+1;
+
+        var x = ( i*.2 )  ;
+        var y = hscale(d)/2;
+        var z = 1
+        return x + " " + y + " " + z
+      },
+      width: function(d) { return 0.1},
+      depth: function(d) { return 0.5},
+      height: function(d) { return hscale(d)},
+      opacity: alpha,
+      color: 'blue'
+    })
+    .on("click", function(d,i) {
+    // alert("click -"+ i+"-"+d)
+    })
+    .on("mouseenter", function(d,i) {
+      // this event gets fired continuously as long as the cursor
+      // is over the element. we only want trigger our animation the first time
+      if(this.hovering) return;
+      console.log("hover", i,d)
+      this.hovering = true;
+      d3.select(this).transition().duration(10)
+      .attr({
+        metalness: 0.8,
+        opacity: .9
+      })
+       d3.select(this).select("a-text")
+      .attr({
+	        	'color':'hsla(240, 100%, 25%, 0.6)',
+	        	'align':'center',
+	        	'position':'0 '+ (hscale(d)/2+.5) + ' 0',
+	        	'scale':'1 1 1',
+	        	'value': animals[i]+', '+d
+      })
+    })
+    .on("mouseleave", function(d,i) {
+      console.log("leave",i,d)
+      this.hovering = false;
+      d3.select(this).transition().duration(500)
+      .attr({
+        metalness: 0,
+        opacity: alpha
+      })
+       d3.select(this).select("a-text")
+      .attr({
+	        	'color':'blue',
+	        	'align':'center',
+	        	'position':'0 '+ (hscale(d)/2+.5) + ' 0',
+	        	'scale':'.01 .01 .01',
+	        	'value': d
+      })
+    })
+	
+	
+	 
+
+		
+	}
+	
+	boxClick('g3');	
+    
+    
+  </script>
+  
+ 
+
+  <script>
+  
+	 $(".bar").each(function() {
+        this.components.material.material.alphaTest = 0.5;
+      this.components.material.material.depthWrite = false;
+      this.components.material.material.needsUpdate = true;;
+    });
+  
+	</script>
+    
+  <body>
+</html>
